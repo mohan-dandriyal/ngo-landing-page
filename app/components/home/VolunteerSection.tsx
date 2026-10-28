@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { Fraunces, Bricolage_Grotesque } from "next/font/google";
 import {
   MotionConfig,
@@ -12,7 +11,7 @@ import {
   useScroll,
   type Variants,
 } from "framer-motion";
-import { ArrowRight, ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
+import { ChevronLeft, ChevronRight, ImageOff } from "lucide-react";
 import data from "@/app/data/volunteer.json";
 
 const serif = Fraunces({ subsets: ["latin"], style: ["italic"], weight: ["300"] });
@@ -56,7 +55,7 @@ function SlideImage({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-export default function VolunteerSlider({ id = "volunteers" }: { id?: string }) {
+export default function VolunteerSlider() {
   const reduce = useReducedMotion();
   const trackRef = useRef<HTMLDivElement>(null);
   const [atStart, setAtStart] = useState(true);
@@ -80,7 +79,7 @@ export default function VolunteerSlider({ id = "volunteers" }: { id?: string }) 
   return (
     <MotionConfig reducedMotion="user">
       <section
-        id={id}
+        id="volunteers"
         className={`${sans.className} relative scroll-mt-16 overflow-hidden py-20 text-[color:var(--ink)] lg:py-28`}
       >
         {/* Left edge lines up with the page container; the slider runs off the right edge of the screen */}

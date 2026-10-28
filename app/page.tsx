@@ -22,7 +22,7 @@ export default function Home() {
         <Programs />
       </div>
 
-       <div id="volunteer">
+       <div>
         <VolunteerSection />
       </div>
 
@@ -30,7 +30,7 @@ export default function Home() {
       <div>
         <Testimonials />
       </div>
-      
+
       <div>
         <Faq />
       </div>

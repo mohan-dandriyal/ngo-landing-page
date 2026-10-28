@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -15,7 +15,13 @@ import {
 import { Menu, X, Heart } from "lucide-react";
 import data from "@/app/data/navbar.json";
 
-const { logo, nav, cta } = data;
+const { logo, cta } = data;
+
+// Trim labels and hrefs once, so a stray space in the JSON can never break the section lookup
+const nav = data.nav.map((item) => ({
+  label: item.label.trim(),
+  href: item.href.trim(),
+}));
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -58,10 +64,44 @@ export default function Navbar() {
     restDelta: 0.001,
   });
 
+  // Scroll-spy: the active link is the section that crosses a line ~35% down the screen.
+  const sectionsRef = useRef<{ href: string; el: HTMLElement }[]>([]);
+
+  const updateActive = useCallback(() => {
+    const items = sectionsRef.current;
+    if (!items.length) return;
+
+    const line = window.innerHeight * 0.35;
+    const atBottom =
+      window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+
+    let found: string | null = null;
+
+    // 1) A section that crosses the line always wins
+    for (const { href, el } of items) {
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= line && rect.bottom > line) {
+        found = href;
+        break;
+      }
+    }
+
+    // 2) Fallback: at the very bottom of the page, pick the lowest section
+    if (!found && atBottom) {
+      const sorted = [...items].sort(
+        (a, b) => a.el.getBoundingClientRect().top - b.el.getBoundingClientRect().top
+      );
+      found = sorted[sorted.length - 1]?.href ?? null;
+    }
+
+    if (found) setActive(found);
+    else if (items.every((i) => i.el.getBoundingClientRect().top > line)) setActive("/");
+  }, []);
+
   // The header stays visible the whole time; it only changes its look once you scroll
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 8);
-    if (latest < 120) setActive("/");
+    updateActive();
   });
 
   // Measure the full-size header (only while at the top, before it tightens up)
@@ -76,25 +116,32 @@ export default function Navbar() {
     return () => window.removeEventListener("resize", measure);
   }, []);
 
-  // Highlight the link of the section currently in view
+  // Find the section each link points to (and warn in development if one is missing)
   useEffect(() => {
-    const sections = nav
-      .filter((item) => item.href.startsWith("#"))
-      .map((item) => document.getElementById(item.href.slice(1)))
-      .filter((el): el is HTMLElement => el !== null);
+    sectionsRef.current = nav
+      .filter((item) => item.href.startsWith("#") && item.href.length > 1)
+      .flatMap((item) => {
+        const id = item.href.slice(1);
+        const el = document.getElementById(id);
+        if (!el) {
+          if (process.env.NODE_ENV !== "production") {
+            console.warn(
+              `Navbar: "${item.label}" links to ${item.href}, but no element has id="${id}"`
+            );
+          }
+          return [];
+        }
+        return [{ href: item.href, el }];
+      });
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(`#${entry.target.id}`);
-        });
-      },
-      { rootMargin: "-40% 0px -55% 0px" }
-    );
-
-    sections.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
+    updateActive();
+    window.addEventListener("resize", updateActive);
+    window.addEventListener("hashchange", updateActive);
+    return () => {
+      window.removeEventListener("resize", updateActive);
+      window.removeEventListener("hashchange", updateActive);
+    };
+  }, [updateActive]);
 
   // Close the mobile menu with Escape
   useEffect(() => {
@@ -103,6 +150,16 @@ export default function Navbar() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
+
+  // Close the mobile menu if the window grows into the desktop layout (1030px and up)
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1030px)");
+    const onChange = (e: MediaQueryListEvent) => {
+      if (e.matches) setOpen(false);
+    };
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   return (
     <>
@@ -151,8 +208,8 @@ export default function Navbar() {
               </motion.div>
             </Link>
 
-            {/* Desktop nav */}
-            <nav aria-label="Main" className="hidden md:block">
+            {/* Desktop nav (shown from 1030px) */}
+            <nav aria-label="Main" className="hidden min-[1030px]:block">
               <motion.ul
                 variants={listVariants}
                 initial="hidden"
@@ -202,7 +259,7 @@ export default function Navbar() {
               </motion.ul>
             </nav>
 
-            {/* Desktop CTA */}
+            {/* Desktop CTA (shown from 1030px) */}
             <motion.div
               initial="rest"
               animate="rest"
@@ -210,7 +267,7 @@ export default function Navbar() {
               whileTap={{ scale: 0.96 }}
               variants={{ rest: { y: 0 }, hover: { y: -2 } }}
               transition={{ type: "spring", stiffness: 350, damping: 18 }}
-              className="relative hidden md:block"
+              className="relative hidden min-[1030px]:block"
             >
               {/* Soft pulsing halo that draws the eye to the CTA */}
               <motion.span
@@ -250,7 +307,7 @@ export default function Navbar() {
               </Link>
             </motion.div>
 
-            {/* Mobile toggle */}
+            {/* Mobile toggle (shown below 1030px) */}
             <motion.button
               type="button"
               whileTap={{ scale: 0.9 }}
@@ -258,7 +315,7 @@ export default function Navbar() {
               aria-expanded={open}
               aria-controls="mobile-menu"
               aria-label={open ? "Close menu" : "Open menu"}
-              className="rounded-md p-2 text-neutral-900 focus-visible:outline-2 focus-visible:outline-neutral-900 md:hidden"
+              className="rounded-md p-2 text-neutral-900 focus-visible:outline-2 focus-visible:outline-neutral-900 min-[1030px]:hidden"
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span
@@ -285,7 +342,7 @@ export default function Navbar() {
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.3, ease: EASE }}
-                className="max-h-[calc(100svh-5rem)] overflow-y-auto border-t border-neutral-200 bg-white md:hidden"
+                className="max-h-[calc(100svh-5rem)] overflow-y-auto border-t border-neutral-200 bg-white min-[1030px]:hidden"
               >
                 <motion.div
                   variants={mobileListVariants}

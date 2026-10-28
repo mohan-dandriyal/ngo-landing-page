@@ -11,7 +11,6 @@ import {
   type Variants,
 } from "framer-motion";
 import {
-  ArrowRight,
   Droplets,
   GraduationCap,
   ImageOff,

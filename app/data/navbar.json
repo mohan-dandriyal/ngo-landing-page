@@ -4,10 +4,10 @@
     { "label": "Home", "href": "/" },
     { "label": "About", "href": "#about" },
     { "label": "Programs", "href": "#programs" },
-    { "label": "Volunteer ", "href": "#volunteer " },
+    { "label": "Volunteers ", "href": "#volunteers" },
     { "label": "Testimonials", "href": "#testimonials" },
     { "label": "FAQ", "href": "#faq" },
-    { "label": "Contact ", "href": "#contact " }
+    { "label": "Contact ", "href": "#contact" }
   ],
-  "cta": { "label": "Donate now", "href": "#donate" }
+  "cta": { "label": "Donate now", "href": "#" }
 }
