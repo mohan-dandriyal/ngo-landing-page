@@ -1,0 +1,41 @@
+{
+  "tagline": "Testimonials",
+  "heading": {
+    "light": "Words from",
+    "bold": "our community"
+  },
+  "testimonials": [
+    {
+      "id": "asha",
+      "quote": "My daughter used to miss school to help at home. With her books and uniform covered, she hasn't missed a single day this year.",
+      "name": "Asha Verma",
+      "role": "Parent, Education program",
+      "rating": 5,
+      "image": { "src": "/testimonial-1.jpg", "alt": "Portrait of Asha Verma" }
+    },
+    {
+      "id": "daniel",
+      "quote": "Every quarter I get an update showing exactly what my gift paid for. That openness is why I've kept giving for six years.",
+      "name": "Daniel Brooks",
+      "role": "Monthly donor",
+      "rating": 5,
+      "image": { "src": "/testimonial-2.jpg", "alt": "Portrait of Daniel Brooks" }
+    },
+    {
+      "id": "priya",
+      "quote": "I came for one Saturday. Two years later I lead the kitchen team. Watching the children eat together is the best part of my week.",
+      "name": "Priya Nair",
+      "role": "Volunteer, Meals program",
+      "rating": 5,
+      "image": { "src": "/testimonial-3.jpg", "alt": "Portrait of Priya Nair" }
+    },
+    {
+      "id": "rahul",
+      "quote": "Many of these children had never seen a doctor. One check-up and a vaccine can change their whole year.",
+      "name": "Dr. Rahul Mehta",
+      "role": "Doctor, Mobile clinic",
+      "rating": 5,
+      "image": { "src": "/testimonial-4.jpg", "alt": "Portrait of Dr. Rahul Mehta" }
+    }
+  ]
+}

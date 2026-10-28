@@ -1,0 +1,79 @@
+{
+  "tagline": "About Hernando",
+  "heading": {
+    "light": "We believe every child",
+    "bold": "deserves a fair start"
+  },
+  "description": [
+    "Hernando is a charity foundation that feeds, teaches and protects children who would otherwise be left behind. We work with families, schools and local volunteers so that help reaches the child who needs it, not just the headline.",
+    "Every donation is tracked from the moment it arrives to the meal on the plate or the book in the bag, and we publish where it went."
+  ],
+  "images": {
+    "main": {
+      "src": "/about.jpg",
+      "alt": "Children smiling in a village school yard"
+    },
+    "secondary": {
+      "src": "/about-2.jpg",
+      "alt": "A volunteer helping a child read"
+    }
+  },
+  "badge": {
+    "text": "Feeding • Educating • Caring • Since 2008 • "
+  },
+  "features": [
+    {
+      "id": "food",
+      "icon": "utensils",
+      "title": "Daily nutritious meals",
+      "description": "Hot meals served at schools and community kitchens, six days a week."
+    },
+    {
+      "id": "education",
+      "icon": "graduation-cap",
+      "title": "Education that lasts",
+      "description": "Books, uniforms and teachers so children stay in class and keep learning."
+    },
+    {
+      "id": "safety",
+      "icon": "shield-check",
+      "title": "Safe and open giving",
+      "description": "Every rupee is tracked and reported, with nothing lost along the way."
+    }
+  ],
+  "stats": [
+    {
+      "id": "meals",
+      "value": 12000,
+      "suffix": "+",
+      "label": "Meals served every month"
+    },
+    {
+      "id": "schools",
+      "value": 85,
+      "suffix": "",
+      "label": "Schools supported"
+    },
+    {
+      "id": "volunteers",
+      "value": 1500,
+      "suffix": "+",
+      "label": "Active volunteers"
+    },
+    {
+      "id": "years",
+      "value": 18,
+      "suffix": "",
+      "label": "Years of service"
+    }
+  ],
+  "cta": {
+    "label": "Our story",
+    "href": "#programs"
+  },
+  "contact": {
+    "label": "Call us anytime",
+    "phone": "+91 00000 00000",
+    "href": "tel:+910000000000"
+  }
+}

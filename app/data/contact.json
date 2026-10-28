@@ -1,0 +1,40 @@
+{
+  "tagline": "Contact Us",
+  "heading": {
+    "light": "Let's talk,",
+    "bold": "we're here to help"
+  },
+  "intro": "Want to donate, volunteer or work with us? Send a message or drop by. A real person replies within one working day.",
+  "details": [
+    {
+      "id": "address",
+      "icon": "map-pin",
+      "label": "Visit us",
+      "value": "12 Hope Street, New Delhi, India",
+      "href": "https://www.google.com/maps/search/?api=1&query=12+Hope+Street+New+Delhi",
+      "hrefLabel": "Get directions"
+    },
+    {
+      "id": "phone",
+      "icon": "phone",
+      "label": "Call us",
+      "value": "+91 00000 00000",
+      "href": "tel:+910000000000"
+    },
+    {
+      "id": "email",
+      "icon": "mail",
+      "label": "Email us",
+      "value": "hello@hernando.org",
+      "href": "mailto:hello@hernando.org"
+    }
+  ],
+  "form": {
+    "title": "Send us a message",
+    "description": "Fields marked with * are required.",
+    "subjects": ["Making a donation", "Becoming a volunteer", "Partnering with us", "Something else"],
+    "submitLabel": "Send message",
+    "successTitle": "Thank you, message received",
+    "successMessage": "We'll get back to you within one working day."
+  }
+}

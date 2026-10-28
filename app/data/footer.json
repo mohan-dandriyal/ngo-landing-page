@@ -1,0 +1,46 @@
+{
+  "brand": {
+    "logo": { "src": "/logo.png", "alt": "Hernando logo", "href": "/" },
+    "description": "Hernando is a charity foundation that feeds, teaches and protects children, with every donation tracked from your hands to theirs."
+  },
+  "cta": {
+    "heading": { "light": "Every child deserves", "bold": "a fair start" },
+    "description": "Give once, give monthly or give your time. Whatever you choose, a child feels it.",
+    "primary": { "label": "Donate now", "href": "#donate" },
+    "secondary": { "label": "Become a volunteer", "href": "#volunteer" }
+  },
+  "columns": [
+    {
+      "id": "explore",
+      "title": "Explore",
+      "links": [
+        { "label": "Home", "href": "/" },
+        { "label": "About us", "href": "#about" },
+        { "label": "Programs", "href": "#programs" },
+        { "label": "Volunteer", "href": "#volunteer" },
+        { "label": "FAQ", "href": "#faq" }
+      ]
+    },
+    {
+      "id": "programs",
+      "title": "Our programs",
+      "links": [
+        { "label": "Education", "href": "#programs" },
+        { "label": "Daily meals", "href": "#programs" },
+        { "label": "Child healthcare", "href": "#programs" },
+        { "label": "Clean water", "href": "#programs" }
+      ]
+    }
+  ],
+  "contactTitle": "Get in touch",
+  "socials": [
+    { "name": "Facebook", "icon": "facebook", "href": "https://facebook.com" },
+    { "name": "Instagram", "icon": "instagram", "href": "https://instagram.com" },
+    { "name": "X", "icon": "x", "href": "https://x.com" },
+    { "name": "YouTube", "icon": "youtube", "href": "https://youtube.com" }
+  ],
+  "legal": {
+    "name": "Hernando Charity Foundation",
+    "year" : "2026"
+  }
+}

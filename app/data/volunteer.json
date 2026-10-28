@@ -1,0 +1,37 @@
+{
+  "heading": {
+    "light": "Volunteers",
+    "bold": "can change the world."
+  },
+  "subline": "Getting started is easy.",
+  "description": "Join a team near you for a weekend, a season or longer. We train every volunteer and match you with work you enjoy.",
+  "cta": { "label": "Join as a volunteer", "href": "#contact" },
+  "slides": [
+    {
+      "id": "planting",
+      "image": { "src": "/img-1.jpg", "alt": "A child planting a seedling with a volunteer" },
+      "caption": "Planting day"
+    },
+  
+    {
+      "id": "reading",
+      "image": { "src": "/img-2.jpg", "alt": "A volunteer reading with children" },
+      "caption": "Reading hour"
+    },
+    {
+      "id": "clinic",
+      "image": { "src": "/img-3.jpg", "alt": "Volunteers helping at a mobile clinic" },
+      "caption": "Mobile clinic"
+    },
+    {
+      "id": "drive",
+      "image": { "src": "/img-4.jpg", "alt": "Volunteers sorting donations" },
+      "caption": "Donation drive"
+    },
+    {
+      "id": "teaching",
+      "image": { "src": "/img-5.jpg", "alt": "A volunteer teaching a class" },
+      "caption": "After-school classes"
+    }
+  ]
+}

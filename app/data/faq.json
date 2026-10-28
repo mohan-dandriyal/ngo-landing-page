@@ -1,0 +1,64 @@
+{
+  "tagline": "FAQ",
+  "heading": {
+    "light": "Got questions?",
+    "bold": "We have answers"
+  },
+  "intro": "Everything people usually ask before they give, volunteer or join a program. Can't find yours? Talk to us.",
+  "contact": {
+    "title": "Still have questions?",
+    "description": "Our team replies to every message within one working day.",
+    "email": "hello@hernando.org",
+    "cta": { "label": "Contact us", "href": "#contact" }
+  },
+  "categories": [
+    { "id": "all", "label": "All" },
+    { "id": "donations", "label": "Donations" },
+    { "id": "volunteering", "label": "Volunteering" },
+    { "id": "programs", "label": "Programs" }
+  ],
+  "faqs": [
+    {
+      "id": "reach",
+      "category": "donations",
+      "question": "How do I know my donation reaches children?",
+      "answer": "Every donation is tracked from the moment it arrives. We publish an annual report showing where the money went, and each program page shows its funding progress."
+    },
+    {
+      "id": "specific",
+      "category": "donations",
+      "question": "Can I give to one specific program?",
+      "answer": "Yes. Choose Education, Meals, Healthcare or Clean Water when you donate and your gift goes only to that program."
+    },
+    {
+      "id": "monthly",
+      "category": "donations",
+      "question": "Can I set up a monthly gift?",
+      "answer": "You can. Monthly gifts help us plan ahead, and you can change, pause or cancel yours at any time."
+    },
+    {
+      "id": "receipt",
+      "category": "donations",
+      "question": "Will I get a receipt for my donation?",
+      "answer": "Every donation gets an emailed receipt. Tax benefits depend on the law where you live, so please check with your tax adviser."
+    },
+    {
+      "id": "join",
+      "category": "volunteering",
+      "question": "How do I become a volunteer?",
+      "answer": "Fill in the volunteer form, tell us when you are free and what you enjoy doing, and our coordinator will match you with a team and call you within a week."
+    },
+    {
+      "id": "skills",
+      "category": "volunteering",
+      "question": "Do I need any special skills?",
+      "answer": "No. We need cooks, drivers, teachers and helpers, and we train every volunteer before the first shift."
+    },
+    {
+      "id": "choose",
+      "category": "programs",
+      "question": "How do you choose where to work?",
+      "answer": "We work with village leaders, schools and local volunteers to find the biggest gaps, then start where a small gift makes the biggest difference."
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "logo": { "src": "/logo.png", "alt": "Helper logo", "href": "/" },
+  "nav": [
+    { "label": "Home", "href": "/" },
+    { "label": "About", "href": "#about" },
+    { "label": "Volunteer ", "href": "#volunteer " },
+    { "label": "Programs", "href": "#programs" },
+    { "label": "FAQ", "href": "#faq" },
+    { "label": "Contact ", "href": "#contact " }
+  ],
+  "cta": { "label": "Donate now", "href": "#donate" }
+}

@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+*{
+  scroll-behavior: smooth !important;
+  transition: 300ms linear;
+}
+
+@theme {
+  --color-brand: #f26522;
+  --color-brand-dark: #e0561a;
+  --color-ink: #1f2b33;
+  --font-sans: var(--font-raleway), "Helvetica Neue", Arial, sans-serif;
+}
+
+:root {
+  --brand: #fe6e41;      /* logo heart / buttons */
+  --brand-soft: #ff8255; /* lighter half of the heart, hover */
+  --brand-ink: #c2410c;  /* brand colour for small text on white (passes contrast) */
+  --ink: #2d2d32;        /* charcoal from the "HERNANDO" wordmark */
+}
+ 
+
+body {
+  background: #ffffff;
+  color: var(--color-ink);
+}

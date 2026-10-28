@@ -1,0 +1,97 @@
+
+{
+  "tagline": "Our Programs",
+  "heading": {
+    "light": "Where your gift",
+    "bold": "goes to work"
+  },
+  "intro": "Five programs, one promise: every contribution helps a child build a brighter future. Pick the one closest to your heart and follow its progress here.",
+  "currency": "USD",
+  "programs": [
+    {
+      "id": "education",
+      "icon": "graduation-cap",
+      "title": "Education for Every Child",
+      "summary": "Books, uniforms and teachers",
+      "description": "We pay school fees, supply books and uniforms, and fund teachers in villages where the nearest classroom is hours away.",
+      "image": {
+        "src": "/program-1.jpg",
+        "alt": "Children studying at a school desk"
+      },
+      "raised": 32500,
+      "goal": 50000,
+      "cta": {
+        "label": "Fund this program",
+        "href": "#donate"
+      }
+    },
+    {
+      "id": "health",
+      "icon": "stethoscope",
+      "title": "Child Healthcare",
+      "summary": "Check-ups, vaccines and medicine",
+      "description": "Mobile clinics bring doctors, vaccines and basic medicine to children who cannot easily reach a hospital.",
+      "image": {
+        "src": "/program-3.jpg",
+        "alt": "A doctor checking a child"
+      },
+      "raised": 22800,
+      "goal": 50000,
+      "cta": {
+        "label": "Fund this program",
+        "href": "#donate"
+      }
+    },
+    {
+      "id": "water",
+      "icon": "droplets",
+      "title": "Clean Water for All",
+      "summary": "Safe water close to home",
+      "description": "We build wells and install water filtration points near schools, so children can spend more time learning instead of fetching water.",
+      "image": {
+        "src": "/program-4.jpg",
+        "alt": "Children drinking clean water from a tap"
+      },
+      "raised": 18400,
+      "goal": 25000,
+      "cta": {
+        "label": "Fund this program",
+        "href": "#donate"
+      }
+    },
+    {
+      "id": "nutrition",
+      "icon": "utensils",
+      "title": "Nutrition for Children",
+      "summary": "Healthy meals and essential nutrition",
+      "description": "We provide nutritious meals, food supplies and nutrition education to help children grow stronger, stay healthy and focus on their education.",
+      "image": {
+        "src": "/program-2.jpg",
+        "alt": "Children enjoying nutritious meals together"
+      },
+      "raised": 15600,
+      "goal": 30000,
+      "cta": {
+        "label": "Fund this program",
+        "href": "#donate"
+      }
+    },
+    {
+      "id": "shelter",
+      "icon": "house",
+      "title": "Safe Shelter for Every Child",
+      "summary": "Safe spaces and essential support",
+      "description": "We support vulnerable children and families with safe shelter, essential supplies and access to community support services.",
+      "image": {
+        "src": "/program-5.jpg",
+        "alt": "Children spending time in a safe community space"
+      },
+      "raised": 19200,
+      "goal": 40000,
+      "cta": {
+        "label": "Fund this program",
+        "href": "#donate"
+      }
+    }
+  ]
+}
