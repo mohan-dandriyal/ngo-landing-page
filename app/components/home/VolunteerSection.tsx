@@ -81,7 +81,7 @@ export default function VolunteerSlider({ id = "volunteers" }: { id?: string }) 
     <MotionConfig reducedMotion="user">
       <section
         id={id}
-        className={`${sans.className} relative scroll-mt-16 overflow-hidden pt-20 text-[color:var(--ink)] lg:pt-28`}
+        className={`${sans.className} relative scroll-mt-16 overflow-hidden py-20 text-[color:var(--ink)] lg:py-28`}
       >
         {/* Left edge lines up with the page container; the slider runs off the right edge of the screen */}
         <div className="pl-6 lg:pl-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))]">
@@ -126,18 +126,6 @@ export default function VolunteerSlider({ id = "volunteers" }: { id?: string }) 
                 {description}
               </motion.p>
 
-              <motion.div variants={rise} className="mt-8">
-                <Link
-                  href={cta.href}
-                  className="group inline-flex items-center gap-2 rounded-full bg-[var(--ink)] px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-[var(--brand)] hover:text-[color:var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[color:var(--ink)]"
-                >
-                  {cta.label}
-                  <ArrowRight
-                    className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
-                    aria-hidden="true"
-                  />
-                </Link>
-              </motion.div>
 
               {/* Slider controls */}
               <motion.div variants={rise} className="mt-10 flex items-center gap-5">
@@ -151,6 +139,7 @@ export default function VolunteerSlider({ id = "volunteers" }: { id?: string }) 
                   >
                     <ChevronLeft className="h-5 w-5" aria-hidden="true" />
                   </button>
+
                   <button
                     type="button"
                     onClick={() => scrollByCard(1)}
@@ -194,14 +183,18 @@ export default function VolunteerSlider({ id = "volunteers" }: { id?: string }) 
                       className="group relative aspect-[2/3] w-[240px] shrink-0 snap-start overflow-hidden rounded-2xl bg-neutral-200 shadow-[0_24px_40px_-24px_rgba(45,45,50,0.5)] sm:w-[280px] lg:w-[300px] lg:even:mt-10"
                     >
                       <SlideImage src={s.image.src} alt={s.image.alt} />
-                      <div
-                        aria-hidden="true"
-                        className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
-                      />
-                      <p className="absolute bottom-5 left-5 right-5 flex items-center gap-2 text-sm font-semibold text-white">
-                        <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full bg-[var(--brand)]" />
-                        {s.caption}
-                      </p>
+                      {
+                        s.caption && <>
+                          <div
+                            aria-hidden="true"
+                            className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"
+                          />
+                          <p className="absolute bottom-5 left-5 right-5 flex items-center gap-2 text-sm font-semibold text-white">
+                            <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full bg-[var(--brand)]" />
+                            {s.caption}
+                          </p>
+                        </>
+                      }
                     </motion.li>
                   ))}
                 </ul>

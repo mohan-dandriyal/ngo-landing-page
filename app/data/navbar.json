@@ -3,8 +3,9 @@
   "nav": [
     { "label": "Home", "href": "/" },
     { "label": "About", "href": "#about" },
-    { "label": "Volunteer ", "href": "#volunteer " },
     { "label": "Programs", "href": "#programs" },
+    { "label": "Volunteer ", "href": "#volunteer " },
+    { "label": "Testimonials", "href": "#testimonials" },
     { "label": "FAQ", "href": "#faq" },
     { "label": "Contact ", "href": "#contact " }
   ],

@@ -122,7 +122,7 @@ export default function Footer() {
                 </div>
 
                 <motion.div variants={rise} className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-                  <a
+                  <Link
                     href={cta.primary.href}
                     className="group inline-flex items-center justify-center gap-2 rounded-full bg-[var(--ink)] px-8 py-4 text-sm font-bold text-white transition-colors hover:bg-white hover:text-[color:var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[color:var(--ink)]"
                   >
@@ -131,13 +131,7 @@ export default function Footer() {
                       className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
                       aria-hidden="true"
                     />
-                  </a>
-                  <a
-                    href={cta.secondary.href}
-                    className="inline-flex items-center justify-center rounded-full border-2 border-[color:var(--ink)] px-8 py-3.5 text-sm font-bold transition-colors hover:bg-[var(--ink)] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[color:var(--ink)]"
-                  >
-                    {cta.secondary.label}
-                  </a>
+                  </Link>
                 </motion.div>
               </div>
             </motion.div>

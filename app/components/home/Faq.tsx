@@ -167,39 +167,6 @@ export default function Faq() {
 
             {/* Right: filters + accordion */}
             <div>
-              <div className="flex flex-wrap gap-2" role="group" aria-label="Filter questions">
-                {categories.map((c) => {
-                  const isActive = c.id === category;
-                  return (
-                    <motion.button
-                      key={c.id}
-                      type="button"
-                      onClick={() => pick(c.id)}
-                      aria-pressed={isActive}
-                      whileTap={{ scale: 0.94 }}
-                      className={`relative isolate rounded-full px-5 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--ink)] ${
-                        isActive ? "text-white" : "text-neutral-600 hover:text-[color:var(--ink)]"
-                      }`}
-                    >
-                      {isActive && (
-                        <motion.span
-                          layoutId="faq-pill"
-                          aria-hidden="true"
-                          className="absolute inset-0 -z-10 rounded-full bg-[var(--ink)]"
-                          transition={{ type: "spring", stiffness: 450, damping: 36 }}
-                        />
-                      )}
-                      {!isActive && (
-                        <span
-                          aria-hidden="true"
-                          className="absolute inset-0 -z-10 rounded-full border border-neutral-200"
-                        />
-                      )}
-                      {c.label}
-                    </motion.button>
-                  );
-                })}
-              </div>
 
               <motion.ul
                 key={category}

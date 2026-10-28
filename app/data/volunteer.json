@@ -8,30 +8,30 @@
   "cta": { "label": "Join as a volunteer", "href": "#contact" },
   "slides": [
     {
-      "id": "planting",
-      "image": { "src": "/img-1.jpg", "alt": "A child planting a seedling with a volunteer" },
-      "caption": "Planting day"
+      "id": "1",
+      "image": { "src": "/img-1.jpg", "alt": "Imran Sheikh" },
+      "caption": "Imran Sheikh"
     },
   
     {
-      "id": "reading",
-      "image": { "src": "/img-2.jpg", "alt": "A volunteer reading with children" },
-      "caption": "Reading hour"
+      "id": "2",
+      "image": { "src": "/img-2.jpg", "alt": "Rohan Mehta" },
+      "caption": "Rohan Mehta"
     },
     {
-      "id": "clinic",
-      "image": { "src": "/img-3.jpg", "alt": "Volunteers helping at a mobile clinic" },
-      "caption": "Mobile clinic"
+      "id": "3",
+      "image": { "src": "/img-3.jpg", "alt": "profile-3" },
+      "caption": "Anita Rao"
     },
     {
-      "id": "drive",
-      "image": { "src": "/img-4.jpg", "alt": "Volunteers sorting donations" },
-      "caption": "Donation drive"
+      "id": "4",
+      "image": { "src": "/img-4.jpg", "alt": "Karan Verma" },
+      "caption": "Karan Verma"
     },
     {
-      "id": "teaching",
-      "image": { "src": "/img-5.jpg", "alt": "A volunteer teaching a class" },
-      "caption": "After-school classes"
+      "id": "5",
+      "image": { "src": "/img-5.jpg", "alt": "Dr. Meera Nair" },
+      "caption": "Dr. Meera Nair"
     }
   ]
 }

@@ -12,12 +12,14 @@ import {
     type Variants,
 } from "framer-motion";
 import {
-    ArrowRight,
+    Award,
     GraduationCap,
     HeartHandshake,
     ImageOff,
     Phone,
+    School,
     ShieldCheck,
+    Users,
     Utensils,
     type LucideIcon,
 } from "lucide-react";
@@ -26,13 +28,30 @@ import data from "@/app/data/about.json";
 const serif = Fraunces({ subsets: ["latin"], style: ["italic"], weight: ["300"] });
 const sans = Bricolage_Grotesque({ subsets: ["latin"], weight: ["400", "500", "700", "800"] });
 
-const { tagline, heading, description, images, badge, features, stats, cta, contact } = data;
+const { tagline, heading, description, images, badge, features, stats, contact } = data;
 
+/* Icons that can be chosen by name from about.json */
 const iconMap: Record<string, LucideIcon> = {
     utensils: Utensils,
     "graduation-cap": GraduationCap,
     "shield-check": ShieldCheck,
+    school: School,
+    users: Users,
+    award: Award,
+    "heart-handshake": HeartHandshake,
 };
+
+/* Fallback if a stat has no "icon" field in the JSON: pick by the stat's id */
+const statIconById: Record<string, LucideIcon> = {
+    meals: Utensils,
+    schools: School,
+    volunteers: Users,
+    years: Award,
+};
+
+function getStatIcon(s: { id: string; icon?: string }): LucideIcon {
+    return (s.icon && iconMap[s.icon]) || statIconById[s.id] || HeartHandshake;
+}
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -46,13 +65,13 @@ const rise: Variants = {
     show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } },
 };
 
-/* NEW: tagline rule draws itself */
+/* Tagline rule draws itself */
 const drawLine: Variants = {
     hidden: { scaleX: 0 },
     show: { scaleX: 1, transition: { duration: 0.8, ease: EASE } },
 };
 
-/* NEW: feature rows slide in from the right */
+/* Feature rows slide in from the right */
 const row: Variants = {
     hidden: { opacity: 0, x: 40 },
     show: { opacity: 1, x: 0, transition: { duration: 0.6, ease: EASE } },
@@ -105,9 +124,7 @@ function RevealImage({
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-3 text-center text-neutral-500">
                     <ImageOff className="h-8 w-8" aria-hidden="true" />
                     {process.env.NODE_ENV !== "production" && (
-                        <span className="break-all text-xs">
-                            Missing file: public{src}
-                        </span>
+                        <span className="break-all text-xs">Missing file: public{src}</span>
                     )}
                 </div>
             ) : (
@@ -117,7 +134,6 @@ function RevealImage({
                     animate={{ clipPath: inView ? "inset(0 0 0% 0)" : "inset(0 0 100% 0)" }}
                     transition={{ duration: 1, ease: EASE, delay }}
                 >
-                    {/* NEW: photo settles from a zoomed-in state while the wipe happens */}
                     <motion.div
                         className="absolute inset-0"
                         initial={{ scale: 1.25 }}
@@ -142,7 +158,6 @@ function RevealImage({
 /* Slowly turning ring of text around a heart */
 function Badge() {
     return (
-        /* NEW: gentle bobbing + hover pop */
         <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
@@ -166,7 +181,6 @@ function Badge() {
                 </text>
             </motion.svg>
             <span className="absolute inset-0 flex items-center justify-center">
-                {/* NEW: heartbeat pulse */}
                 <motion.span
                     animate={{ scale: [1, 1.14, 1, 1.1, 1] }}
                     transition={{ duration: 1.8, ease: "easeInOut", repeat: Infinity, repeatDelay: 0.6 }}
@@ -179,6 +193,55 @@ function Badge() {
     );
 }
 
+/* Impact counters: each card has its own icon, matched to its label */
+function ImpactNumber() {
+    return (
+        <MotionConfig reducedMotion="user">
+            <section aria-label="Our impact in numbers" className="mt-20">
+                <motion.ul
+                    variants={stagger}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true, amount: 0.25 }}
+                    className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-200 shadow-[0_30px_60px_-30px_rgba(45,45,50,0.45)] lg:grid-cols-4"
+                >
+                    {stats.map((s) => {
+                        const Icon = getStatIcon(s);
+                        return (
+                            <motion.li
+                                key={s.id}
+                                variants={rise}
+                                className="group relative bg-white p-6 sm:p-8 lg:p-10"
+                            >
+                                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[var(--brand-tint)] text-[color:var(--brand-ink)] ring-1 ring-[#fe6e41]/25 transition-all duration-300 group-hover:-rotate-6 group-hover:scale-110 group-hover:bg-[var(--brand)] group-hover:text-[color:var(--ink)]">
+                                    <Icon className="h-7 w-7" strokeWidth={1.75} aria-hidden="true" />
+                                </span>
+
+                                <p className="mt-6 text-[clamp(2.4rem,4.6vw,3.75rem)] font-extrabold leading-none tracking-tight">
+                                    <CountUp value={s.value} />
+                                    <span className="text-[color:var(--brand-ink)]">{s.suffix}</span>
+                                </p>
+
+                                {/* Short line that draws in under the number */}
+                                <motion.span
+                                    aria-hidden="true"
+                                    variants={{
+                                        hidden: { scaleX: 0 },
+                                        show: { scaleX: 1, transition: { duration: 0.8, ease: EASE, delay: 0.3 } },
+                                    }}
+                                    className="mt-4 block h-0.5 w-12 origin-left bg-[var(--brand)] transition-[width] duration-300 group-hover:w-20"
+                                />
+
+                                <p className="mt-4 text-sm leading-snug text-neutral-600 sm:text-base">{s.label}</p>
+                            </motion.li>
+                        );
+                    })}
+                </motion.ul>
+            </section>
+        </MotionConfig>
+    );
+}
+
 export default function AboutSection() {
     return (
         <MotionConfig reducedMotion="user">
@@ -186,7 +249,7 @@ export default function AboutSection() {
                 id="about"
                 className={`${sans.className} relative scroll-mt-16 overflow-hidden bg-white py-20 text-[color:var(--ink)] lg:py-28`}
             >
-                {/* NEW: slowly drifting background glow */}
+                {/* Slowly drifting background glow */}
                 <motion.div
                     aria-hidden="true"
                     className="pointer-events-none absolute -right-40 top-10 h-[28rem] w-[28rem] rounded-full bg-[var(--brand)] opacity-[0.08] blur-3xl"
@@ -281,7 +344,7 @@ export default function AboutSection() {
                                 ))}
                             </div>
 
-                            {/* Feature rows now stagger in one by one */}
+                            {/* Feature rows stagger in one by one */}
                             <motion.ul
                                 variants={stagger}
                                 className="mt-8 divide-y divide-neutral-200 border-y border-neutral-200"
@@ -310,34 +373,11 @@ export default function AboutSection() {
                             </motion.ul>
 
                             <motion.div variants={rise} className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-5">
-                                {/* NEW: lift + press feedback, with a shine sweep on the button */}
-                                <motion.div
-                                    whileHover={{ y: -3 }}
-                                    whileTap={{ scale: 0.96 }}
-                                    transition={{ type: "spring", stiffness: 350, damping: 18 }}
-                                    className="inline-block"
-                                >
-                                    <a
-                                        href={cta.href}
-                                        className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-[var(--ink)] px-7 py-3.5 text-sm font-bold text-white transition-colors hover:bg-[var(--brand)] hover:text-[color:var(--ink)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[color:var(--ink)]"
-                                    >
-                                        <span
-                                            aria-hidden="true"
-                                            className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/4 -skew-x-12 bg-white/30 transition-transform duration-700 ease-out group-hover:translate-x-[600%]"
-                                        />
-                                        <span className="relative">{cta.label}</span>
-                                        <ArrowRight
-                                            className="relative h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
-                                            aria-hidden="true"
-                                        />
-                                    </a>
-                                </motion.div>
-
                                 <a
                                     href={contact.href}
                                     className="group flex items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[color:var(--ink)]"
                                 >
-                                    {/* NEW: phone icon rings on hover */}
+                                    {/* Phone icon rings on hover */}
                                     <motion.span
                                         whileHover={{ rotate: [0, -18, 18, -12, 12, 0] }}
                                         transition={{ duration: 0.6 }}
@@ -359,63 +399,4 @@ export default function AboutSection() {
             </section>
         </MotionConfig>
     );
-}
-
-
-
-
-
- function ImpactNumber() {
-  return (
-    <MotionConfig reducedMotion="user">
-      {/* Top half white (About above), bottom half charcoal (Programs below): the card straddles the join */}
-      <section
-        aria-label="Our impact in numbers"
-        className="mt-20"
-        // className={`${sans.className} bg-[linear-gradient(to_bottom,#ffffff_50%,var(--ink)_50%)] text-[color:var(--ink)]`}
-      >
-        <div className="mx-auto">
-          <motion.ul
-            variants={stagger}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, amount: 0.25 }}
-            className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-neutral-200 bg-neutral-200 shadow-[0_30px_60px_-30px_rgba(45,45,50,0.45)] lg:grid-cols-4"
-          >
-            {stats.map((s) => {
-              const Icon = iconMap[s.id] ?? HeartHandshake;
-              return (
-                <motion.li
-                  key={s.id}
-                  variants={rise}
-                  className="group relative bg-white p-6 sm:p-8 lg:p-10"
-                >
-                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--brand-tint)] text-[color:var(--brand-ink)] transition-all duration-300 group-hover:-rotate-6 group-hover:scale-110 group-hover:bg-[var(--brand)] group-hover:text-[color:var(--ink)]">
-                    <Icon className="h-5 w-5" aria-hidden="true" />
-                  </span>
-
-                  <p className="mt-6 text-[clamp(2.4rem,4.6vw,3.75rem)] font-extrabold leading-none tracking-tight">
-                    <CountUp value={s.value} />
-                    <span className="text-[color:var(--brand-ink)]">{s.suffix}</span>
-                  </p>
-
-                  {/* Short line that draws in under the number */}
-                  <motion.span
-                    aria-hidden="true"
-                    variants={{
-                      hidden: { scaleX: 0 },
-                      show: { scaleX: 1, transition: { duration: 0.8, ease: EASE, delay: 0.3 } },
-                    }}
-                    className="mt-4 block h-0.5 w-12 origin-left bg-[var(--brand)] transition-[width] duration-300 group-hover:w-20"
-                  />
-
-                  <p className="mt-4 text-sm leading-snug text-neutral-600 sm:text-base">{s.label}</p>
-                </motion.li>
-              );
-            })}
-          </motion.ul>
-        </div>
-      </section>
-    </MotionConfig>
-  );
 }

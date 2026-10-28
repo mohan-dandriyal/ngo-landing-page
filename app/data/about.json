@@ -44,24 +44,28 @@
   "stats": [
     {
       "id": "meals",
+      "icon": "utensils",
       "value": 12000,
       "suffix": "+",
       "label": "Meals served every month"
     },
     {
       "id": "schools",
+      "icon": "school",
       "value": 85,
       "suffix": "",
       "label": "Schools supported"
     },
     {
       "id": "volunteers",
+      "icon": "users",
       "value": 1500,
       "suffix": "+",
       "label": "Active volunteers"
     },
     {
       "id": "years",
+      "icon": "award",
       "value": 18,
       "suffix": "",
       "label": "Years of service"

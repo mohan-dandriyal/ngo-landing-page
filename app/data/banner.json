@@ -10,7 +10,7 @@
       "tagline": "Become a part to change the world",
       "description": "Our company has a long tradition of charitable giving and philanthropy. Lorem ipsum dolor sit amet.",
       "image": { "src": "/banner-slide-1.jpg", "alt": "A child sitting against a wall" },
-      "cta": { "label": "Donate now", "href": "#donate" }
+      "cta": { "label": "Contact now", "href": "#contact" }
     },
     {
       "id": "education",
@@ -21,7 +21,7 @@
       "tagline": "Education changes the whole story",
       "description": "Your gift pays for books, uniforms and teachers, so children can stay in school and keep learning.",
       "image": { "src": "/banner-slide-2.jpg", "alt": "Children studying together in a classroom" },
-      "cta": { "label": "Sponsor a child", "href": "#donate" }
+      "cta": { "label": "Contact now", "href": "#contact" }
     },
     {
       "id": "volunteer",
@@ -32,7 +32,7 @@
       "tagline": "Give a few hours, make a lasting mark",
       "description": "Volunteers serve meals, run reading hours and organise local drives. Join a team near you.",
       "image": { "src": "/banner-slide-3.jpg",  "alt": "Volunteers serving meals to children" },
-      "cta": { "label": "Become a volunteer", "href": "#volunteer" }
+      "cta": { "label": "Contact now", "href": "#contact" }
     }
     ],
   "services": [

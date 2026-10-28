@@ -26,12 +26,13 @@ export default function Home() {
         <VolunteerSection />
       </div>
 
-      <div>
-        <Faq />
-      </div>
 
       <div>
         <Testimonials />
+      </div>
+      
+      <div>
+        <Faq />
       </div>
 
       <div>
