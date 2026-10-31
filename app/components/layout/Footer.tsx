@@ -240,7 +240,7 @@ export default function Footer() {
             {/* Bottom bar */}
             <div className="mt-14 flex flex-col gap-5 border-t border-neutral-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
               <p className="text-sm text-neutral-600">
-                &copy; {legal.year} {legal.name}. All rights reserved.
+                &copy; {legal.year} {legal.name}
               </p>
 
               <div className="flex items-center gap-6">

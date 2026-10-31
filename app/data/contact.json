@@ -10,7 +10,7 @@
       "id": "address",
       "icon": "map-pin",
       "label": "Visit us",
-      "value": "2309 Mayflower Dr, Lynchburg, VA 24501, United States",
+      "value": "3170 Rosewood Lane Unit 200 , Beverly Hills, CA 90210",
       "href": "https://www.google.com/maps/search/?api=1&query=12+Hope+Street+New+Delhi",
       "hrefLabel": "Get directions"
     },
@@ -18,15 +18,15 @@
       "id": "phone",
       "icon": "phone",
       "label": "Call us",
-      "value": "+1 213 555 1234",
-      "href": "tel:+1 213 555 1234"
+      "value": "+1 000000000",
+      "href": "tel:+1 000000000"
     },
     {
       "id": "email",
       "icon": "mail",
       "label": "Email us",
-      "value": "hello@hernando.org",
-      "href": "mailto:hello@hernando.org"
+      "value": "info@xyz.com",
+      "href": "mailto:info@xyz.com"
     }
   ],
   "form": {
