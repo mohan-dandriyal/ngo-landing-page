@@ -7,7 +7,7 @@
     { "label": "Volunteers ", "href": "#volunteers" },
     { "label": "Testimonials", "href": "#testimonials" },
     { "label": "FAQ", "href": "#faq" },
-    { "label": "Contact ", "href": "#contact" }
+    { "label": "Contact Us", "href": "#contact" }
   ],
   "cta": { "label": "Donate now", "href": "#" }
 }
