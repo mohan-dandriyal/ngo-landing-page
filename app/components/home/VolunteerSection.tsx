@@ -80,7 +80,7 @@ export default function VolunteerSlider() {
     <MotionConfig reducedMotion="user">
       <section
         id="volunteers"
-        className={`${sans.className} relative scroll-mt-16 overflow-hidden py-20 text-[color:var(--ink)] lg:py-28`}
+        className={`${sans.className} relative scroll-mt-16 overflow-hidden py-16 text-[color:var(--ink)] lg:py-18`}
       >
         {/* Left edge lines up with the page container; the slider runs off the right edge of the screen */}
         <div className="pl-6 lg:pl-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))]">

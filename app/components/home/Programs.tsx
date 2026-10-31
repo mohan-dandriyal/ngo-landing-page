@@ -77,7 +77,7 @@ export default function Programs() {
     <MotionConfig reducedMotion="user">
       <section
         id="programs"
-        className={`${sans.className} relative scroll-mt-16 overflow-hidden bg-[var(--ink,#0b1218)] py-20 text-white lg:py-28`}
+        className={`${sans.className} relative scroll-mt-16 overflow-hidden bg-[var(--ink,#0b1218)] py-20 text-white lg:py-16`}
       >
         {/* Background glow effects */}
         <motion.div

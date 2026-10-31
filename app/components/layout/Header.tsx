@@ -1,6 +1,13 @@
+
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type MouseEvent,
+} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -17,7 +24,6 @@ import data from "@/app/data/navbar.json";
 
 const { logo, cta } = data;
 
-// Trim labels and hrefs once, so a stray space in the JSON can never break the section lookup
 const nav = data.nav.map((item) => ({
   label: item.label.trim(),
   href: item.href.trim(),
@@ -25,24 +31,42 @@ const nav = data.nav.map((item) => ({
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-// One orchestrated entrance: links drop in one after another
 const listVariants: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.07, delayChildren: 0.2 } },
-};
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: -10 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: EASE } },
+  show: {
+    transition: {
+      staggerChildren: 0.07,
+      delayChildren: 0.2,
+    },
+  },
 };
 
-// Mobile links slide in one by one
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: -10 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: EASE },
+  },
+};
+
 const mobileListVariants: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
+  show: {
+    transition: {
+      staggerChildren: 0.06,
+      delayChildren: 0.1,
+    },
+  },
 };
+
 const mobileItemVariants: Variants = {
   hidden: { opacity: 0, x: -16 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.3, ease: EASE } },
+  show: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.3, ease: EASE },
+  },
 };
 
 export default function Navbar() {
@@ -51,121 +75,276 @@ export default function Navbar() {
   const [active, setActive] = useState("/");
   const [hovered, setHovered] = useState<string | null>(null);
 
-  // The header is position: fixed, so this spacer keeps the page content from sliding under it
   const headerRef = useRef<HTMLElement>(null);
   const [spacerHeight, setSpacerHeight] = useState(93);
 
+  const sectionsRef = useRef<{ href: string; el: HTMLElement }[]>([]);
+  const lockedRef = useRef(false);
+  const lockTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const { scrollY, scrollYProgress } = useScroll();
 
-  // Smooth reading-progress bar along the bottom edge of the header
   const progress = useSpring(scrollYProgress, {
     stiffness: 120,
     damping: 30,
     restDelta: 0.001,
   });
 
-  // Scroll-spy: the active link is the section that crosses a line ~35% down the screen.
-  const sectionsRef = useRef<{ href: string; el: HTMLElement }[]>([]);
+  /* --------------------------------
+     Sticky header offset
+  --------------------------------- */
+
+  const getHeaderOffset = useCallback(() => {
+    return (headerRef.current?.getBoundingClientRect().height ?? 0) + 12;
+  }, []);
+
+  /* --------------------------------
+     Smooth section navigation
+  --------------------------------- */
+
+  const handleNavigation = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+      setOpen(false);
+
+      if (!href) return;
+
+      const destination = new URL(href, window.location.href);
+
+      const isSamePage =
+        destination.origin === window.location.origin &&
+        destination.pathname === window.location.pathname;
+
+      // Allow Next.js to handle navigation to another page.
+      if (!isSamePage || !destination.hash) return;
+
+      const id = decodeURIComponent(destination.hash.slice(1));
+
+      if (!id) return;
+
+      const target = document.getElementById(id);
+
+      if (!target) return;
+
+      // Prevent the browser's default hash jump.
+      event.preventDefault();
+
+      const targetPosition =
+        target.getBoundingClientRect().top +
+        window.scrollY -
+        getHeaderOffset();
+
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      // Immediately update the active navigation item.
+      setActive(`#${id}`);
+
+      // Temporarily prevent scroll spy from overriding the selected item.
+      lockedRef.current = true;
+
+      if (lockTimerRef.current) {
+        clearTimeout(lockTimerRef.current);
+      }
+
+      window.scrollTo({
+        top: Math.max(0, targetPosition),
+        behavior: reduceMotion ? "auto" : "smooth",
+      });
+
+      // Update the URL without causing another navigation.
+      window.history.replaceState(
+        null,
+        "",
+        `${destination.pathname}${destination.search}${destination.hash}`
+      );
+
+      // Unlock after scrolling.
+      lockTimerRef.current = setTimeout(() => {
+        lockedRef.current = false;
+        updateActiveRef.current?.();
+      }, reduceMotion ? 50 : 1000);
+    },
+    [getHeaderOffset]
+  );
+
+  /* --------------------------------
+     Scroll spy
+  --------------------------------- */
 
   const updateActive = useCallback(() => {
+    if (lockedRef.current) return;
+
     const items = sectionsRef.current;
+
     if (!items.length) return;
 
     const line = window.innerHeight * 0.35;
+
     const atBottom =
-      window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - 4;
 
     let found: string | null = null;
 
-    // 1) A section that crosses the line always wins
     for (const { href, el } of items) {
       const rect = el.getBoundingClientRect();
+
       if (rect.top <= line && rect.bottom > line) {
         found = href;
         break;
       }
     }
 
-    // 2) Fallback: at the very bottom of the page, pick the lowest section
     if (!found && atBottom) {
       const sorted = [...items].sort(
-        (a, b) => a.el.getBoundingClientRect().top - b.el.getBoundingClientRect().top
+        (a, b) =>
+          a.el.getBoundingClientRect().top -
+          b.el.getBoundingClientRect().top
       );
+
       found = sorted[sorted.length - 1]?.href ?? null;
     }
 
-    if (found) setActive(found);
-    else if (items.every((i) => i.el.getBoundingClientRect().top > line)) setActive("/");
+    if (found) {
+      setActive(found);
+    } else if (
+      items.every(
+        (item) => item.el.getBoundingClientRect().top > line
+      )
+    ) {
+      setActive("/");
+    }
   }, []);
 
-  // The header stays visible the whole time; it only changes its look once you scroll
+  const updateActiveRef = useRef<(() => void) | null>(updateActive);
+
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 8);
     updateActive();
   });
 
-  // Measure the full-size header (only while at the top, before it tightens up)
+  /* --------------------------------
+     Measure header height
+  --------------------------------- */
+
   useEffect(() => {
     const el = headerRef.current;
+
     if (!el) return;
+
     const measure = () => {
-      if (window.scrollY < 8) setSpacerHeight(el.offsetHeight);
+      if (window.scrollY < 8) {
+        setSpacerHeight(el.offsetHeight);
+      }
     };
+
     measure();
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+
     window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+    };
   }, []);
 
-  // Find the section each link points to (and warn in development if one is missing)
-  useEffect(() => {
-    sectionsRef.current = nav
-      .filter((item) => item.href.startsWith("#") && item.href.length > 1)
-      .flatMap((item) => {
-        const id = item.href.slice(1);
-        const el = document.getElementById(id);
-        if (!el) {
-          if (process.env.NODE_ENV !== "production") {
-            console.warn(
-              `Navbar: "${item.label}" links to ${item.href}, but no element has id="${id}"`
-            );
-          }
-          return [];
-        }
-        return [{ href: item.href, el }];
-      });
+  /* --------------------------------
+     Find all navigation sections
+  --------------------------------- */
 
-    updateActive();
+  useEffect(() => {
+    const collectSections = () => {
+      sectionsRef.current = nav
+        .filter(
+          (item) =>
+            item.href.startsWith("#") && item.href.length > 1
+        )
+        .flatMap((item) => {
+          const id = decodeURIComponent(item.href.slice(1));
+          const el = document.getElementById(id);
+
+          if (!el) {
+            if (process.env.NODE_ENV !== "production") {
+              console.warn(
+                `Navbar: "${item.label}" links to ${item.href}, but no element has id="${id}"`
+              );
+            }
+
+            return [];
+          }
+
+          return [{ href: item.href, el }];
+        });
+
+      updateActive();
+    };
+
+    collectSections();
+
     window.addEventListener("resize", updateActive);
     window.addEventListener("hashchange", updateActive);
+
     return () => {
       window.removeEventListener("resize", updateActive);
       window.removeEventListener("hashchange", updateActive);
     };
   }, [updateActive]);
 
-  // Close the mobile menu with Escape
+  /* --------------------------------
+     Cleanup scroll timer
+  --------------------------------- */
+
+  useEffect(() => {
+    return () => {
+      if (lockTimerRef.current) {
+        clearTimeout(lockTimerRef.current);
+      }
+    };
+  }, []);
+
+  /* --------------------------------
+     Close menu with Escape
+  --------------------------------- */
+
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+      }
+    };
+
     window.addEventListener("keydown", onKey);
+
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  // Close the mobile menu if the window grows into the desktop layout (1030px and up)
+  /* --------------------------------
+     Close menu on desktop resize
+  --------------------------------- */
+
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1030px)");
+
     const onChange = (e: MediaQueryListEvent) => {
       if (e.matches) setOpen(false);
     };
+
     mq.addEventListener("change", onChange);
+
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
   return (
     <>
+      {/* Fixed header spacer */}
       <div aria-hidden="true" style={{ height: spacerHeight }} />
 
-      {/* reducedMotion="user" turns off movement for people who ask for less motion */}
       <MotionConfig reducedMotion="user">
         <motion.header
           ref={headerRef}
@@ -179,7 +358,6 @@ export default function Navbar() {
           }`}
         >
           <div
-            // Header tightens up a little once you scroll
             className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-[padding] duration-300 lg:px-10 ${
               scrolled ? "py-1.5" : "py-3"
             }`}
@@ -187,15 +365,21 @@ export default function Navbar() {
             {/* Logo */}
             <Link
               href={logo.href}
+              onClick={(event) =>
+                handleNavigation(event, logo.href)
+              }
               className="shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-neutral-900"
             >
               <motion.div
-                // Logo shrinks smoothly on scroll
                 animate={{ scale: scrolled ? 0.85 : 1 }}
                 style={{ originX: 0 }}
                 whileHover={{ scale: 1.06, rotate: -2 }}
                 whileTap={{ scale: 0.97 }}
-                transition={{ type: "spring", stiffness: 400, damping: 20 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 20,
+                }}
               >
                 <Image
                   src={logo.src}
@@ -208,8 +392,11 @@ export default function Navbar() {
               </motion.div>
             </Link>
 
-            {/* Desktop nav (shown from 1030px) */}
-            <nav aria-label="Main" className="hidden min-[1030px]:block">
+            {/* Desktop Navigation */}
+            <nav
+              aria-label="Main"
+              className="hidden min-[1030px]:block"
+            >
               <motion.ul
                 variants={listVariants}
                 initial="hidden"
@@ -219,37 +406,52 @@ export default function Navbar() {
               >
                 {nav.map((item) => {
                   const isActive = active === item.href;
+
                   return (
-                    <motion.li key={item.label} variants={itemVariants}>
+                    <motion.li
+                      key={item.label}
+                      variants={itemVariants}
+                    >
                       <Link
                         href={item.href}
                         aria-current={isActive ? "true" : undefined}
+                        onClick={(event) =>
+                          handleNavigation(event, item.href)
+                        }
                         onMouseEnter={() => setHovered(item.href)}
                         onFocus={() => setHovered(item.href)}
                         onBlur={() => setHovered(null)}
                         className={`relative isolate block rounded-full px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-neutral-900 ${
-                          isActive ? "text-neutral-950" : "text-neutral-600 hover:text-neutral-950"
+                          isActive
+                            ? "text-neutral-950"
+                            : "text-neutral-600 hover:text-neutral-950"
                         }`}
                       >
-                        {/* Hover pill that glides between links */}
                         {hovered === item.href && (
                           <motion.span
                             layoutId="nav-hover"
                             aria-hidden="true"
                             className="absolute inset-0 -z-10 rounded-full bg-neutral-100"
-                            transition={{ type: "spring", stiffness: 500, damping: 36 }}
+                            transition={{
+                              type: "spring",
+                              stiffness: 500,
+                              damping: 36,
+                            }}
                           />
                         )}
 
                         {item.label}
 
-                        {/* Active underline that slides to the current section */}
                         {isActive && (
                           <motion.span
                             layoutId="nav-active"
                             aria-hidden="true"
                             className="absolute inset-x-4 -bottom-0.5 h-0.5 rounded-full bg-[#fe6e41]"
-                            transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                            transition={{
+                              type: "spring",
+                              stiffness: 400,
+                              damping: 32,
+                            }}
                           />
                         )}
                       </Link>
@@ -259,35 +461,51 @@ export default function Navbar() {
               </motion.ul>
             </nav>
 
-            {/* Desktop CTA (shown from 1030px) */}
+            {/* Desktop CTA */}
             <motion.div
               initial="rest"
               animate="rest"
               whileHover="hover"
               whileTap={{ scale: 0.96 }}
-              variants={{ rest: { y: 0 }, hover: { y: -2 } }}
-              transition={{ type: "spring", stiffness: 350, damping: 18 }}
+              variants={{
+                rest: { y: 0 },
+                hover: { y: -2 },
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 350,
+                damping: 18,
+              }}
               className="relative hidden min-[1030px]:block"
             >
-              {/* Soft pulsing halo that draws the eye to the CTA */}
               <motion.span
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0 rounded-full bg-[#fe6e41]"
-                animate={{ scale: [1, 1.3], opacity: [0.45, 0] }}
-                transition={{ duration: 2.2, ease: "easeOut", repeat: Infinity }}
+                animate={{
+                  scale: [1, 1.3],
+                  opacity: [0.45, 0],
+                }}
+                transition={{
+                  duration: 2.2,
+                  ease: "easeOut",
+                  repeat: Infinity,
+                }}
               />
+
               <Link
                 href={cta.href}
+                onClick={(event) =>
+                  handleNavigation(event, cta.href)
+                }
                 className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-[#fe6e41] px-5 py-2.5 text-sm font-semibold text-neutral-950 shadow-[0_10px_24px_-10px_rgba(254,110,65,0.8)] transition-colors hover:bg-neutral-950 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900"
               >
-                {/* Shine sweep on hover */}
                 <span
                   aria-hidden="true"
                   className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/4 -skew-x-12 bg-white/40 transition-transform duration-700 ease-out group-hover:translate-x-[700%]"
                 />
+
                 <motion.span
                   variants={{
-                    // Heart beats every few seconds, and bursts on hover
                     rest: {
                       scale: [1, 1.18, 1, 1.12, 1],
                       transition: {
@@ -297,17 +515,21 @@ export default function Navbar() {
                         repeatDelay: 2,
                       },
                     },
-                    hover: { scale: [1, 1.4, 1], transition: { duration: 0.5 } },
+                    hover: {
+                      scale: [1, 1.4, 1],
+                      transition: { duration: 0.5 },
+                    },
                   }}
                   className="relative flex"
                 >
                   <Heart className="h-4 w-4" aria-hidden="true" />
                 </motion.span>
+
                 <span className="relative">{cta.label}</span>
               </Link>
             </motion.div>
 
-            {/* Mobile toggle (shown below 1030px) */}
+            {/* Mobile Toggle */}
             <motion.button
               type="button"
               whileTap={{ scale: 0.9 }}
@@ -326,13 +548,17 @@ export default function Navbar() {
                   transition={{ duration: 0.15 }}
                   className="block"
                 >
-                  {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                  {open ? (
+                    <X className="h-6 w-6" />
+                  ) : (
+                    <Menu className="h-6 w-6" />
+                  )}
                 </motion.span>
               </AnimatePresence>
             </motion.button>
           </div>
 
-          {/* Mobile menu (scrolls inside itself if it is taller than the screen) */}
+          {/* Mobile Menu */}
           <AnimatePresence initial={false}>
             {open && (
               <motion.div
@@ -353,6 +579,7 @@ export default function Navbar() {
                   <ul>
                     {nav.map((item) => {
                       const isActive = active === item.href;
+
                       return (
                         <motion.li
                           key={item.label}
@@ -361,13 +588,20 @@ export default function Navbar() {
                         >
                           <Link
                             href={item.href}
-                            onClick={() => setOpen(false)}
-                            aria-current={isActive ? "true" : undefined}
+                            onClick={(event) =>
+                              handleNavigation(event, item.href)
+                            }
+                            aria-current={
+                              isActive ? "true" : undefined
+                            }
                             className={`flex items-center justify-between py-3 text-base font-medium ${
-                              isActive ? "text-neutral-950" : "text-neutral-600"
+                              isActive
+                                ? "text-neutral-950"
+                                : "text-neutral-600"
                             }`}
                           >
                             {item.label}
+
                             {isActive && (
                               <motion.span
                                 layoutId="mobile-active-dot"
@@ -381,13 +615,19 @@ export default function Navbar() {
                     })}
                   </ul>
 
+                  {/* Mobile CTA */}
                   <motion.div variants={mobileItemVariants}>
                     <Link
                       href={cta.href}
-                      onClick={() => setOpen(false)}
+                      onClick={(event) =>
+                        handleNavigation(event, cta.href)
+                      }
                       className="mt-5 flex items-center justify-center gap-2 rounded-full bg-[#fe6e41] px-5 py-3 text-sm font-semibold text-neutral-950 transition-colors hover:bg-neutral-950 hover:text-white"
                     >
-                      <Heart className="h-4 w-4" aria-hidden="true" />
+                      <Heart
+                        className="h-4 w-4"
+                        aria-hidden="true"
+                      />
                       {cta.label}
                     </Link>
                   </motion.div>
@@ -396,10 +636,13 @@ export default function Navbar() {
             )}
           </AnimatePresence>
 
-          {/* Scroll progress bar (sits on the bottom edge of the header) */}
+          {/* Scroll Progress Bar */}
           <motion.div
             aria-hidden="true"
-            style={{ scaleX: progress, originX: 0 }}
+            style={{
+              scaleX: progress,
+              originX: 0,
+            }}
             className="pointer-events-none absolute inset-x-0 bottom-0 h-[3px] bg-gradient-to-r from-[#fe6e41] via-amber-400 to-[#fe6e41]"
           />
         </motion.header>

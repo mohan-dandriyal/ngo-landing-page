@@ -11,7 +11,7 @@
       "name": "Asha Verma",
       "role": "Parent, Education program",
       "rating": 5,
-      "image": { "src": "/testimonial-1.jpg", "alt": "Portrait of Asha Verma" }
+      "image": { "src": "/profile-2.jpg", "alt": "Portrait of Asha Verma" }
     },
     {
       "id": "daniel",
@@ -19,7 +19,7 @@
       "name": "Daniel Brooks",
       "role": "Monthly donor",
       "rating": 5,
-      "image": { "src": "/testimonial-2.jpg", "alt": "Portrait of Daniel Brooks" }
+      "image": { "src": "/profile-1.jpg", "alt": "Portrait of Daniel Brooks" }
     },
     {
       "id": "priya",
@@ -27,7 +27,7 @@
       "name": "Priya Nair",
       "role": "Volunteer, Meals program",
       "rating": 5,
-      "image": { "src": "/testimonial-3.jpg", "alt": "Portrait of Priya Nair" }
+      "image": { "src": "/profile-2.jpg", "alt": "Portrait of Priya Nair" }
     },
     {
       "id": "rahul",
@@ -35,7 +35,7 @@
       "name": "Dr. Rahul Mehta",
       "role": "Doctor, Mobile clinic",
       "rating": 5,
-      "image": { "src": "/testimonial-4.jpg", "alt": "Portrait of Dr. Rahul Mehta" }
+      "image": { "src": "/profile-1.jpg", "alt": "Portrait of Dr. Rahul Mehta" }
     }
   ]
 }

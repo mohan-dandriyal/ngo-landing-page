@@ -15,7 +15,10 @@
     "description": "Give once, give monthly or give your time. Whatever you choose, a child feels it.",
     "primary": {
       "label": "Donate now",
-      "href": "#donate"
+      "href": "#"
+    },
+    "ctaBgImage" : {
+      "image" : "/cta-banner.webp"
     },
     "secondary": {
       "label": "Become a volunteer",

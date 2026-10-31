@@ -84,7 +84,7 @@ export default function Testimonials() {
           if (e.key === "ArrowRight") go(index + 1, 1);
           if (e.key === "ArrowLeft") go(index - 1, -1);
         }}
-        className={`${sans.className} relative scroll-mt-16 overflow-hidden bg-[var(--ink)] py-20 text-white lg:py-28`}
+        className={`${sans.className} relative scroll-mt-16 overflow-hidden bg-[var(--ink)] py-16 text-white lg:py-18`}
       >
         <div className="mx-auto max-w-5xl px-6 text-center lg:px-10">
           {/* Heading */}

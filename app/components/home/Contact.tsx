@@ -121,7 +121,7 @@ export default function Contact() {
     <MotionConfig reducedMotion="user">
       <section
         id="contact"
-        className={`${sans.className} relative scroll-mt-16 overflow-hidden bg-[var(--ink)] py-20 text-white lg:py-28`}
+        className={`${sans.className} relative scroll-mt-16 overflow-hidden bg-[var(--ink)] py-16 text-white lg:py-18`}
       >
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <div className="grid items-start gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">

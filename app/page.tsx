@@ -12,6 +12,7 @@ export default function Home() {
   return (
     <main>
       <Navbar />
+      
       <Hero />
 
       <div>
@@ -25,7 +26,6 @@ export default function Home() {
        <div>
         <VolunteerSection />
       </div>
-
 
       <div>
         <Testimonials />

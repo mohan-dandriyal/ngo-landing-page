@@ -16,7 +16,6 @@ import {
     GraduationCap,
     HeartHandshake,
     ImageOff,
-    Phone,
     School,
     ShieldCheck,
     Users,
@@ -24,6 +23,7 @@ import {
     type LucideIcon,
 } from "lucide-react";
 import data from "@/app/data/about.json";
+import OutLineButton from "../ui/PrimaryButton";
 
 const serif = Fraunces({ subsets: ["latin"], style: ["italic"], weight: ["300"] });
 const sans = Bricolage_Grotesque({ subsets: ["latin"], weight: ["400", "500", "700", "800"] });
@@ -197,7 +197,7 @@ function Badge() {
 function ImpactNumber() {
     return (
         <MotionConfig reducedMotion="user">
-            <section aria-label="Our impact in numbers" className="mt-20">
+            <section aria-label="Our impact in numbers" className="mt-14">
                 <motion.ul
                     variants={stagger}
                     initial="hidden"
@@ -247,7 +247,7 @@ export default function AboutSection() {
         <MotionConfig reducedMotion="user">
             <section
                 id="about"
-                className={`${sans.className} relative scroll-mt-16 overflow-hidden bg-white py-20 text-[color:var(--ink)] lg:py-28`}
+                className={`${sans.className} relative scroll-mt-16 overflow-hidden bg-white py-18 text-[color:var(--ink)] lg:py-18`}
             >
                 {/* Slowly drifting background glow */}
                 <motion.div
@@ -373,23 +373,7 @@ export default function AboutSection() {
                             </motion.ul>
 
                             <motion.div variants={rise} className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-5">
-                                <a
-                                    href={contact.href}
-                                    className="group flex items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[color:var(--ink)]"
-                                >
-                                    {/* Phone icon rings on hover */}
-                                    <motion.span
-                                        whileHover={{ rotate: [0, -18, 18, -12, 12, 0] }}
-                                        transition={{ duration: 0.6 }}
-                                        className="flex h-12 w-12 items-center justify-center rounded-full border border-neutral-300 transition-colors group-hover:border-[color:var(--brand)] group-hover:bg-[var(--brand)]"
-                                    >
-                                        <Phone className="h-5 w-5" aria-hidden="true" />
-                                    </motion.span>
-                                    <span>
-                                        <span className="block text-xs text-neutral-500">{contact.label}</span>
-                                        <span className="block text-base font-bold">{contact.phone}</span>
-                                    </span>
-                                </a>
+                                <OutLineButton label={data.cta.label} href={data.cta.href}  />
                             </motion.div>
                         </motion.div>
                     </div>

@@ -27,6 +27,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import data from "@/app/data/banner.json";
+import PrimaryButton from "../ui/PrimaryButton";
 
 // Two clearly different voices: a light italic serif and a heavy grotesque
 const serif = Fraunces({ subsets: ["latin"], style: ["italic"], weight: ["300"] });
@@ -284,37 +285,9 @@ export default function Banner() {
                   {slide.description}
                 </motion.p>
 
-                <motion.div variants={fadeUp} className="mt-8">
-                  {/* NEW: halo + lift + press feedback */}
-                  <motion.div
-                    whileHover={{ y: -3 }}
-                    whileTap={{ scale: 0.96 }}
-                    transition={{ type: "spring", stiffness: 350, damping: 18 }}
-                    className="relative inline-block"
-                  >
-                    <motion.span
-                      aria-hidden="true"
-                      className="pointer-events-none absolute inset-0 rounded-full bg-[#fe6e41]"
-                      animate={{ scale: [1, 1.35], opacity: [0.5, 0] }}
-                      transition={{ duration: 2.2, ease: "easeOut", repeat: Infinity }}
-                    />
-                    <a
-                      href={slide.cta.href}
-                      className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-[#fe6e41] px-7 py-3.5 text-sm font-bold text-neutral-950 transition-colors hover:bg-white hover:text-neutral-950 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-                    >
-                      {/* NEW: shine sweep */}
-                      <span
-                        aria-hidden="true"
-                        className="pointer-events-none absolute inset-y-0 -left-1/3 w-1/4 -skew-x-12 bg-white/50 transition-transform duration-700 ease-out group-hover:translate-x-[600%]"
-                      />
-                      <span className="relative">{slide.cta.label}</span>
-                      <ArrowRight
-                        className="relative h-4 w-4 transition-transform duration-200 group-hover:translate-x-1"
-                        aria-hidden="true"
-                      />
-                    </a>
-                  </motion.div>
-                </motion.div>
+                <div className="mt-6">
+                  <PrimaryButton label={slide.cta.label} href={slide.cta.href}/>
+                </div>
               </motion.div>
             </AnimatePresence>
           </motion.div>

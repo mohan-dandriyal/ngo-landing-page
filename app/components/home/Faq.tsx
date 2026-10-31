@@ -62,7 +62,7 @@ export default function Faq() {
     <MotionConfig reducedMotion="user">
       <section
         id="faq"
-        className={`${sans.className} relative scroll-mt-16 overflow-hidden bg-white py-20 text-[color:var(--ink)] lg:py-28`}
+        className={`${sans.className} relative scroll-mt-16 overflow-hidden bg-white py-16 text-[color:var(--ink)] lg:py-18`}
       >
         {/* NEW: slowly drifting background blobs */}
         <motion.div
